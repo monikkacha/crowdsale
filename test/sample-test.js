@@ -24,22 +24,21 @@ describe("Deployment", function () {
 
     await monikToken.transferOwnership(monikCrowdsale.address);
 
-    await monikToken.transferFrom(owner.address, monikToken.address, ethers.utils.parseUnits("10", 18));
+    // console.log('** addr1 : ', addr1.address);
+    // console.log('** addr2 : ', addr2.address);
+    // console.log('** owner : ', owner.address);
+
   });
 
-  it("Owner account has all the token", async () => {
+  it("Owner account has no token", async () => {
     balance = await monikToken.balanceOf(owner.address);
-    expect(balance).to.equal(ethers.utils.parseUnits("10", 18));
+    expect(balance).to.equal(ethers.utils.parseUnits("0", 18));
   });
 
   it("Buy token", async function () {
-    console.log('** addr1 : ', addr1.address);
-    console.log('** addr2 : ', addr2.address);
-    console.log('** owner : ', owner.address);
-
     monikCrowdsale.buyTokens(addr1, { value: ethers.utils.parseUnits("2", 18) });
     let totalSupply = await monikToken.totalSupply();
-    expect(totalSupply).to.be.equal(ethers.utils.parseUnits("10", 18));
+    expect(totalSupply).to.be.equal(ethers.utils.parseUnits("8", 18));
   });
 
 });
