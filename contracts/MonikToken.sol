@@ -12,7 +12,7 @@ contract MonikToken is ERC20, ERC20Detailed, Ownable {
         uint8 _decimals,
         uint256 _totalSupply
     ) public ERC20Detailed(_name, _symbol, _decimals) {
-        // _mint(msg.sender, _totalSupply);
-        _mint(address(this), _totalSupply);
+        // _mint(address(this), _totalSupply);
+        _mint(msg.sender, _totalSupply);
     }
 }

@@ -22,23 +22,25 @@ describe("Deployment", function () {
     monikCrowdsale = await MonikCrowdsale.deploy(1, "0x231464eF37dFBD7b3B9e55DaBAF79386910d82B3", monikToken.address);
     await monikCrowdsale.deployed();
 
-    await monikToken.transferOwnership(monikCrowdsale.address);
-
-    // console.log('** addr1 : ', addr1.address);
-    // console.log('** addr2 : ', addr2.address);
-    // console.log('** owner : ', owner.address);
-
+    await monikToken.transfer(monikCrowdsale.address, ethers.utils.parseUnits("8", 18), { from: owner.address });
   });
 
-  it("Owner account has no token", async () => {
+  it("Owner account has 2 token", async () => {
     balance = await monikToken.balanceOf(owner.address);
-    expect(balance).to.equal(ethers.utils.parseUnits("0", 18));
+    expect(balance).to.equal(ethers.utils.parseUnits("2", 18));
   });
+
+
+  it("Crowdsale account has 8 token", async () => {
+    balance = await monikToken.balanceOf(monikCrowdsale.address);
+    expect(balance).to.equal(ethers.utils.parseUnits("8", 18));
+  });
+
 
   it("Buy token", async function () {
-    monikCrowdsale.buyTokens(addr1, { value: ethers.utils.parseUnits("2", 18) });
-    let totalSupply = await monikToken.totalSupply();
-    expect(totalSupply).to.be.equal(ethers.utils.parseUnits("8", 18));
+    monikCrowdsale.buyTokens(addr1.address, { value: ethers.utils.parseUnits("2", 18) });
+    let boughtTokens = await monikToken.balanceOf(addr1.address);
+    expect(boughtTokens).to.be.equal(ethers.utils.parseUnits("2", 18));
   });
 
 });
